@@ -28,6 +28,8 @@ RH_RF95 rf95(RFM95_CS, RFM95_INT);
 #define DI0 26     // GPIO26 - SX1278's IRQ (interrupt request)
 #define BAND 868E6 // 915E6
 
+#define LED 2
+
 SSD1306 display(OLED_ADDRESS, OLED_SDA, OLED_SCL);
 OLEDDisplayUi ui(&display);
 
@@ -38,6 +40,9 @@ void setup()
     //while (!Serial);
     Serial.begin(9600);
     delay(100);
+
+	pinMode(LED, OUTPUT);
+
     // put your setup code here, to run once:
     Serial.println("setup complete.");
     pinMode(OLED_RST, OUTPUT);
@@ -47,7 +52,7 @@ void setup()
 
     display.init();
     display.flipScreenVertically();
-    display.setFont(ArialMT_Plain_10);    
+    display.setFont(ArialMT_Plain_10);
 
     pinMode(RFM95_RST, OUTPUT);
     digitalWrite(RFM95_RST, HIGH);
@@ -106,6 +111,10 @@ void loop()
             display.drawString(90, 40, String(rf95.lastSNR()));
             display.display();
             counter++;
+            digitalWrite(LED, HIGH); // turn the LED on (HIGH is the voltage level)
+            delay(100);           // wait for a second
+            digitalWrite(LED, LOW);  // turn the LED off by making the voltage LOW			
+            delay(100);           // wait for a second
         }
-    }    
+    }
 }

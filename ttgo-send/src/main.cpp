@@ -31,6 +31,8 @@ RH_RF95 rf95(RFM95_CS, RFM95_INT);
 SSD1306 display(OLED_ADDRESS, OLED_SDA, OLED_SCL);
 OLEDDisplayUi ui(&display);
 
+#define LED 2
+
 unsigned int counter = 0;
 
 void setup()
@@ -40,6 +42,9 @@ void setup()
     delay(100);
     // put your setup code here, to run once:
     Serial.println("setup complete.");
+
+	pinMode(LED, OUTPUT);
+
     pinMode(OLED_RST, OUTPUT);
     digitalWrite(OLED_RST, LOW); // low to reset OLED
     delay(50);
@@ -100,4 +105,9 @@ void loop()
     rf95.send((uint8_t *) msg, 5);
     rf95.waitPacketSent();
     counter++;
+
+	digitalWrite(LED, HIGH);
+	delay(100);
+	digitalWrite(LED, LOW);
+	delay(100);
 }
